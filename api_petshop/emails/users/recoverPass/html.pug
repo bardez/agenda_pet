@@ -1,0 +1,8 @@
+html
+  body
+    include ../../includes/header.pug
+    p Olá <b>#{user}</b>, Você solicitou a recuperação da sua senha
+    p clique no link abaixo para definir uma nova senha
+    p
+      a(href=linkRecover) Clique aqui para redefinir sua senha.
+    include ../../includes/footer.pug

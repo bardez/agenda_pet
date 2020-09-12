@@ -1,0 +1,11 @@
+html
+  head
+    style
+      include style.css
+  body
+    div.wrapper
+      div.content
+        include ../includes/header.pug
+        p.teste Olá <b>#{user}</b>, este é um email de teste.
+        p.teste seu email está configurado corretamente!
+        include ../includes/footer.pug

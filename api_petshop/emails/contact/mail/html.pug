@@ -1,0 +1,14 @@
+html
+  head
+    style
+      include style.css
+  body
+    div.wrapper
+      div
+        include ../../includes/header.pug
+        p Email enviado através site (Página de contato):<br>
+        p Nome: <b>#{name}</b>
+        p Email: <b>#{email}</b>
+        p Assunto: <b>#{subject}</b>
+        p Mensagem: <b>#{message}</b>
+        include ../../includes/footer.pug

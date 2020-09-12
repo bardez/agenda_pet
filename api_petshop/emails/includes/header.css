@@ -1,0 +1,10 @@
+.main{
+    height: 100px;
+    /* text-align: center; */
+}
+.title{
+    color: green;
+}
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}

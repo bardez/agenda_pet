@@ -1,0 +1,13 @@
+html
+  head
+    style
+      include style.css
+  body
+    div.wrapper
+      div
+        include ../../includes/header.pug
+        p Olá <b>#{name}</b>, Obrigado por cadastrar-se em nosso sistema
+        p <b>Usuário:</b> #{username}
+        p <b>E-mail:</b> #{email}
+        p Em breve seu cadastro será aprovado e você poderá dar lances.
+        include ../../includes/footer.pug

@@ -1,0 +1,12 @@
+.teste{
+    color: green;
+}
+.wrapper{
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}
+.content{
+    width: 400px;
+}
