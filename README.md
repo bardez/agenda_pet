@@ -1,4 +1,4 @@
 # agenda_pet
 Projeto Integrador IV - Agendamento de serviços para petshop
 
-Thiago Bardez
+Thiago Bardez 2
