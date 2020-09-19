@@ -19,18 +19,18 @@ final $HomeController = BindInject(
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeController on _HomeControllerBase, Store {
-  final _$valueAtom = Atom(name: '_HomeControllerBase.value');
+  final _$canShowFabAtom = Atom(name: '_HomeControllerBase.canShowFab');
 
   @override
-  int get value {
-    _$valueAtom.reportRead();
-    return super.value;
+  bool get canShowFab {
+    _$canShowFabAtom.reportRead();
+    return super.canShowFab;
   }
 
   @override
-  set value(int value) {
-    _$valueAtom.reportWrite(value, super.value, () {
-      super.value = value;
+  set canShowFab(bool value) {
+    _$canShowFabAtom.reportWrite(value, super.canShowFab, () {
+      super.canShowFab = value;
     });
   }
 
@@ -38,11 +38,11 @@ mixin _$HomeController on _HomeControllerBase, Store {
       ActionController(name: '_HomeControllerBase');
 
   @override
-  void increment() {
+  void setFab(bool value) {
     final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
-        name: '_HomeControllerBase.increment');
+        name: '_HomeControllerBase.setFab');
     try {
-      return super.increment();
+      return super.setFab(value);
     } finally {
       _$_HomeControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -51,7 +51,7 @@ mixin _$HomeController on _HomeControllerBase, Store {
   @override
   String toString() {
     return '''
-value: ${value}
+canShowFab: ${canShowFab}
     ''';
   }
 }

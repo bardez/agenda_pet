@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'home_controller.dart';
@@ -23,7 +24,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> with TickerP
     DateTime(2019, 2, 14): ['Valentine\'s Day'],
     DateTime(2019, 4, 21): ['Easter Sunday'],
     DateTime(2019, 4, 22): ['Easter Monday'],
-    DateTime(2020, 9, 07): ['Independencia'],
+    // DateTime(2020, 9, 07): ['Independencia'],
   };
 
   @override
@@ -32,21 +33,21 @@ class _HomePageState extends ModularState<HomePage, HomeController> with TickerP
     final _selectedDay = DateTime.now();
 
     _events = {
-      _selectedDay.subtract(Duration(days: 30)): ['Event A0', 'Event B0', 'Event C0'],
-      _selectedDay.subtract(Duration(days: 27)): ['Event A1'],
-      _selectedDay.subtract(Duration(days: 20)): ['Event A2', 'Event B2', 'Event C2', 'Event D2'],
-      _selectedDay.subtract(Duration(days: 16)): ['Event A3', 'Event B3'],
-      _selectedDay.subtract(Duration(days: 10)): ['Event A4', 'Event B4', 'Event C4'],
-      _selectedDay.subtract(Duration(days: 4)): ['Event A5', 'Event B5', 'Event C5'],
-      _selectedDay.subtract(Duration(days: 2)): ['Event A6', 'Event B6'],
-      _selectedDay: ['Event A7', 'Event B7', 'Event C7', 'Event D7'],
-      _selectedDay.add(Duration(days: 1)): ['Event A8', 'Event B8', 'Event C8', 'Event D8'],
-      _selectedDay.add(Duration(days: 3)): Set.from(['Event A9', 'Event A9', 'Event B9']).toList(),
-      _selectedDay.add(Duration(days: 7)): ['Event A10', 'Event B10', 'Event C10'],
-      _selectedDay.add(Duration(days: 11)): ['Event A11', 'Event B11'],
-      _selectedDay.add(Duration(days: 17)): ['Event A12', 'Event B12', 'Event C12', 'Event D12', 'Tosa do Andreis'],
-      _selectedDay.add(Duration(days: 22)): ['Event A13', 'Event B13'],
-      _selectedDay.add(Duration(days: 26)): ['Event A14', 'Event B14', 'Event C14'],
+      _selectedDay.subtract(Duration(days: 30)): ['Reserva A0', 'Reserva B0', 'Reserva C0'],
+      _selectedDay.subtract(Duration(days: 27)): ['Reserva A1'],
+      _selectedDay.subtract(Duration(days: 20)): ['Reserva A2', 'Reserva B2', 'Reserva C2', 'Reserva D2'],
+      _selectedDay.subtract(Duration(days: 16)): ['Reserva A3', 'Reserva B3'],
+      _selectedDay.subtract(Duration(days: 10)): ['Reserva A4', 'Reserva B4', 'Reserva C4'],
+      _selectedDay.subtract(Duration(days: 4)): ['Reserva A5', 'Reserva B5', 'Reserva C5'],
+      _selectedDay.subtract(Duration(days: 2)): ['Reserva A6', 'Reserva B6'],
+      _selectedDay: ['Reserva A7', 'Reserva B7', 'Reserva C7', 'Reserva D7'],
+      _selectedDay.add(Duration(days: 1)): ['Reserva A8', 'Reserva B8', 'Reserva C8', 'Reserva D8'],
+      _selectedDay.add(Duration(days: 3)): Set.from(['Reserva A9', 'Reserva A9', 'Reserva B9']).toList(),
+      _selectedDay.add(Duration(days: 7)): ['Reserva A10', 'Reserva B10', 'Reserva C10'],
+      _selectedDay.add(Duration(days: 11)): ['Reserva A11', 'Reserva B11'],
+      _selectedDay.add(Duration(days: 17)): ['Reserva A12', 'Reserva B12', 'Reserva C12', 'Reserva D12', 'Tosa do Andreis'],
+      _selectedDay.add(Duration(days: 22)): ['Reserva A13', 'Reserva B13'],
+      _selectedDay.add(Duration(days: 26)): ['Reserva A14', 'Reserva B14', 'Reserva C14'],
     };
 
     _selectedEvents = _events[_selectedDay] ?? [];
@@ -69,8 +70,10 @@ class _HomePageState extends ModularState<HomePage, HomeController> with TickerP
 
   void _onDaySelected(DateTime day, List events) {
     print('CALLBACK: _onDaySelected');
+    bool permited = (day.difference(DateTime.now()).inDays < 0) ? false : true;
     setState(() {
       _selectedEvents = events;
+      controller.setFab( permited );
     });
   }
 
@@ -86,7 +89,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> with TickerP
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Agendamento'),
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -101,8 +104,19 @@ class _HomePageState extends ModularState<HomePage, HomeController> with TickerP
           Expanded(child: _buildEventList()),
         ],
       ),
+      floatingActionButton: Observer(builder: (_) {
+        if( controller.canShowFab ) {
+          return FloatingActionButton(
+            onPressed: () => Modular.to.pushNamed('ScheduleForm'),
+            child: Icon(Icons.add),
+          );
+        } else {
+          return Container();
+        }
+      })
     );
   }
+
 
   // Simple TableCalendar configuration (using Styles)
   Widget _buildTableCalendar() {

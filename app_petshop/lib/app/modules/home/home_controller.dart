@@ -8,10 +8,8 @@ class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
   @observable
-  int value = 0;
+  bool canShowFab = true;
 
   @action
-  void increment() {
-    value++;
-  }
+  void setFab( bool value ) => canShowFab = value;
 }
