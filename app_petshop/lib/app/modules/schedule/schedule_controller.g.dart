@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'home_controller.dart';
+part of 'schedule_controller.dart';
 
 // **************************************************************************
 // InjectionGenerator
 // **************************************************************************
 
-final $HomeController = BindInject(
-  (i) => HomeController(),
+final $ScheduleController = BindInject(
+  (i) => ScheduleController(),
   singleton: true,
   lazy: true,
 );
@@ -18,8 +18,8 @@ final $HomeController = BindInject(
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
-mixin _$HomeController on _HomeControllerBase, Store {
-  final _$canShowFabAtom = Atom(name: '_HomeControllerBase.canShowFab');
+mixin _$ScheduleController on _ScheduleControllerBase, Store {
+  final _$canShowFabAtom = Atom(name: '_ScheduleControllerBase.canShowFab');
 
   @override
   bool get canShowFab {
@@ -34,17 +34,17 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
-  final _$_HomeControllerBaseActionController =
-      ActionController(name: '_HomeControllerBase');
+  final _$_ScheduleControllerBaseActionController =
+      ActionController(name: '_ScheduleControllerBase');
 
   @override
   void setFab(bool value) {
-    final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
-        name: '_HomeControllerBase.setFab');
+    final _$actionInfo = _$_ScheduleControllerBaseActionController.startAction(
+        name: '_ScheduleControllerBase.setFab');
     try {
       return super.setFab(value);
     } finally {
-      _$_HomeControllerBaseActionController.endAction(_$actionInfo);
+      _$_ScheduleControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
