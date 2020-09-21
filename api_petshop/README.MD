@@ -134,5 +134,3 @@ Logs on the server should be written on a file and without pino-pretty to not im
 pino-pretty should be used only to analyze logs
 Example:
     cat logs/app.log | pino-pretty -t 'SYS:standard'
-
-Andreis Silva

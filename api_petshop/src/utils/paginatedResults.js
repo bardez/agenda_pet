@@ -3,7 +3,7 @@ import { Sequelize } from '../models';
 export const paginatedResults = async (model, data, excludeFields=[], searchFields = [], inclusions = []) =>{
 
     const {
-        sortBy = 'id',
+        sortBy = 'usu_id',
         sortDesc = 'asc',
         page = 1,
         itemsPerPage = 10,

@@ -5,7 +5,7 @@ export default (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
-        usu_name: DataTypes.STRING(50),
+        usu_nome: DataTypes.STRING(50),
         usu_tip_id: DataTypes.INTEGER,
         usu_email: {
             type: DataTypes.STRING(100),
@@ -14,8 +14,8 @@ export default (sequelize, DataTypes) => {
         },
         usu_status: DataTypes.INTEGER(1),
         usu_celular: DataTypes.STRING(14),
-        usu_senha: DataTypes.STRING(30),
-        recover_hash: DataTypes.STRING(100)
+        usu_cpf_cnpj: DataTypes.STRING(18),
+        usu_senha: DataTypes.STRING(30)
     },{
         tableName: 'usuario',
         timestamps: false,

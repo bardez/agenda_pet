@@ -28,7 +28,7 @@ export const isAuthorized = (authorizedRoles) => {
 
     return (req, res, next) => {
         
-        if (req.user.role === USER_ROLES.SUPERUSER) {
+        if (req.user.usu_tip_id === USER_ROLES.SUPERUSER) {
             return next();
         }
 
@@ -36,7 +36,7 @@ export const isAuthorized = (authorizedRoles) => {
             authorizedRoles = [authorizedRoles];
         }
   
-        if (authorizedRoles.indexOf(req.user.role) !== -1) {
+        if (authorizedRoles.indexOf(req.user.usu_tip_id) !== -1) {
             return next();
         } else {
             resultError(HTTP.FORBIDDEN, 'Acesso não autorizado', res)();

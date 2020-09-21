@@ -4,14 +4,14 @@ export const USER_STATUS = {
 }
 
 export const SESSION_STATUS ={
-    ACTIVE: 'A',
-    INACTIVE: 'I'
+    ACTIVE: 1,
+    INACTIVE: 2
 }
 
 export const USER_ROLES = {
-    ADMIN: 'A',
-    GUEST: 'G',
-    SUPERUSER: 'S',
+    ADMIN: 2,
+    GUEST: 3,
+    SUPERUSER: 1,
 }
 
 export const GENDER_USER = {

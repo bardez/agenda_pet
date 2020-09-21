@@ -6,7 +6,7 @@ export default (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
-        tip_descricao: DataTypes.STRING(45)
+        tip_desc: DataTypes.STRING(45)
     },{
         tableName: 'tipo_usuario',
         timestamps: false,

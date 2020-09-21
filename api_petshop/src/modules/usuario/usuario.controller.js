@@ -11,33 +11,33 @@ import {
 } from '../../utils/response';
 import { paginatedResults } from '../../utils/paginatedResults'
 import { onlyNumbers } from '../../utils/helper'
+import { USER_ROLES } from '../../utils/constants';
 const fields = [
-    'name',
-    'email',
-    'username',
-    'password',
-    'gender',
-    'phone',
-    'status_id',
-    'role'
+    'usu_nome',
+    'usu_email',
+    'usu_cpf_cnpj',
+    'usu_status',
+    'usu_senha',
+    'usu_celular',
+    'usu_tip_id',
 ]
 
 const getAll = async (req, res) =>{
 
     const excludedFields = [
-        'password',
+        'usu_senha',
         'created_at',
         'updated_at',
-        'newsletter_flag'
+        'deleted_at'
     ];
 
     req.query.extraFields = [
-        ['id', req.user.id, Sequelize.Op.ne],
-        ['role', 'A', Sequelize.Op.eq]
+        // ['usu_id', req.user.usu_id, Sequelize.Op.ne],
+        // ['usu_tip_id', req.user.usu_tip, Sequelize.Op.eq]
     ]
 
-    const searchFields = [ 'email', 'name', 'username'];
-    const data = await paginatedResults(UsuarioModel, req.query, excludedFields, searchFields);
+    const searchFields = [ 'usu_email', 'usu_nome','usu_celular'];
+    const data = await paginatedResults(UsuarioModel, req.query, excludedFields, {searchFields});
 
     const returnData = {
         count: data.count,
@@ -55,7 +55,7 @@ const getById = async (req, res) =>{
     if(req.params.id > 0){
         const data = await UsuarioModel.findByPk(req.params.id, {
             attributes:{
-                exclude: ['password']
+                exclude: ['usu_senha']
             }
         });
         if(data == null){
@@ -74,24 +74,27 @@ const encryptPassword = (password) =>{
 const save = async (req, res) =>{
 
     let { data:userData } = req.body;
-    userData.password = await encryptPassword(userData.password);
-    userData.role = 'A';
+    userData.usu_senha = await encryptPassword(userData.usu_senha);
+
+    console.log(userData)
+
     try {
         // userData.status_id = USER_STATUS.ENABLED;
         // userData.phone = onlyNumbers(userData.phone);
 
         const dataVerify = await userCheck(userData);
         if(dataVerify){
-          if(dataVerify.phone == userData.phone){
+          if(dataVerify.usu_celular == userData.usu_celular){
             return resultError(HTTP.CONFLICT, 'Telefone já cadastrado', res)();
-          }else if(dataVerify.username == userData.username){
-            return resultError(HTTP.CONFLICT, 'Nome de usuário já cadastrado.', res)();
-          } else if(dataVerify.email == userData.email){
+          } else if(dataVerify.usu_email == userData.usu_email){
             return resultError(HTTP.CONFLICT, 'E-mail já cadastrado.', res)();
+          } else if(dataVerify.usu_cpf_cnpj == userData.usu_cpf_cnpj){
+            return resultError(HTTP.CONFLICT, 'CPF/CNPJ já cadastrado.', res)();
           }
         }
 
         const user = await UsuarioModel.create(userData, { fields });
+        delete user.usu_senha;
         resultSuccess('Dados salvos com sucesso.', res)(user);
     } catch (error) {
         console.log('UserController.save - Erro ao criar registro.', error);
@@ -100,27 +103,23 @@ const save = async (req, res) =>{
 }
 
 const userCheck = async (userModel) =>{
-
+ 
   let whereCond = {
     [Sequelize.Op.or]: [{
-      phone: userModel.phone
-    },{
-      username: userModel.username
-    },{
-      email: userModel.email
+      usu_email: userModel.usu_email
     }],
-    role: 'A'
+    usu_tip_id: 2
   };
 
   if(userModel.id > 0){
     whereCond.id = {
-      [Sequelize.Op.ne]: userModel.id
+      [Sequelize.Op.ne]: userModel.usu_id
     }
   }
 
   const user = await UsuarioModel.findOne({
     where: whereCond,
-    attributes: ['email', 'phone', 'username']
+    attributes: ['usu_email', 'usu_celular']
   });
 
   return user;
@@ -130,29 +129,27 @@ const update = async (req, res) =>{
     try {
         const user = await UsuarioModel.findOne({
             where: {
-                id: req.params.id
+                usu_id: req.params.id
             }
         })
             
         if(user){
             let { data:userData } = req.body;
 
-            if(userData.password && userData.password.length > 0){
-                userData.password = await encryptPassword(userData.password);
+            if(userData.usu_senha && userData.usu_senha.length > 0){
+                userData.usu_senha = await encryptPassword(userData.usu_senha);
             }
-            userData.phone = onlyNumbers(userData.phone);
+            if(userData.usu_celular) userData.usu_celular = onlyNumbers(userData.usu_celular);
             const dataVerify = await userCheck(userData);
             if(dataVerify){
-              if(user.phone !== userData.phone && dataVerify.phone == userData.phone){
+              if(user.usu_celular !== userData.usu_celular && dataVerify.usu_celular == userData.usu_celular){
                 return resultError(HTTP.CONFLICT, 'Telefone já cadastrado', res)();
-              }else if(user.username !== userData.username && dataVerify.username == userData.username){
-                return resultError(HTTP.CONFLICT, 'Nome de usuário já cadastrado.', res)();
-              } else if(user.email !== userData.email && dataVerify.email != userData.email){
+              } else if(user.usu_email !== userData.usu_email && dataVerify.usu_email != userData.usu_email){
                 return resultError(HTTP.CONFLICT, 'E-mail já cadastrado.', res)();
               }
             }
 
-            await user.update(userData, { fields });
+            await user.update(userData);
             resultSuccess('Dados atualizados com sucesso.', res)(user);
         }
         
@@ -164,7 +161,7 @@ const update = async (req, res) =>{
 
 const remove = async (req, res) =>{
     try {
-        if(req.user.role != 'A' && req.user.role != 'S'){
+        if(req.user.usu_tip_id != USER_ROLES.ADMIN && req.user.usu_tip_id != USER_ROLES.SUPERUSER){
             resultError(HTTP.INTERNAL_SERVER_ERROR, 'Usuário não tem permissão para esta ação!', res)();
         }else{
             await UsuarioModel.destroy({
@@ -183,7 +180,7 @@ const remove = async (req, res) =>{
 
 const changeStatus = async (req, res) =>{
 
-    if(req.user.role != 'A' && req.user.role != 'S'){
+    if(req.user.usu_tip_id != USER_ROLES.ADMIN && req.user.usu_tip_id != USER_ROLES.SUPERUSER){
         return resultError(HTTP.INTERNAL_SERVER_ERROR, 'Usuário não tem permissão para esta ação!', res)();
     }
 
@@ -196,7 +193,7 @@ const changeStatus = async (req, res) =>{
 
         if(user){
             await user.update({
-                status_id: user.status_id == USER_STATUS.ENABLED ? USER_STATUS.DISABLED : USER_STATUS.ENABLED
+                usu_status: user.usu_status == USER_STATUS.ENABLED ? USER_STATUS.DISABLED : USER_STATUS.ENABLED
             });
             resultSuccess('Dados atualizados com sucesso.', res)(user);
         }

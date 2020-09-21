@@ -1,5 +1,5 @@
 import {
-    UsusarioModel,
+    UsuarioModel,
     SessionModel,
     ConfigModel,
     Sequelize
@@ -17,30 +17,28 @@ import jwt from 'jsonwebtoken'
 import { logger } from '../../utils/logger'
 
 const getUserToken = async (userId, req) =>{
-    const user = await UsusarioModel.findOne({
+    const user = await UsuarioModel.findOne({
         where:{
-           id: userId
+           usu_id: userId
         },
         attributes: [
-            'id',
-            'role',
-            'name',
-            'phone',
-            'newsletter_flag',
-            'username',
-            'email',
-            'status_id'
+            'usu_id',
+            'usu_tip_id',
+            'usu_nome',
+            'usu_celular',
+            'usu_email',
+            'usu_status'
         ]
     });
 
     // save logged user on database
     const session = await SessionModel.create({
-        user_id: user.id,
+        user_id: user.usu_id,
         ip: req.connection.remoteAddress,
         status: SESSION_STATUS.ACTIVE
     });
 
-    user.setDataValue('session_id', session.id);
+    // user.setDataValue('session_id', session.id);
     const token = jwt.sign(user.get(), process.env.SECRET);
     return token;
 }
@@ -49,58 +47,56 @@ const login = async (req, res) =>{
     try {
         if(req.body){
             const {
-                email,
-                password,
+                usu_email,
+                usu_senha,
                 app
             } = req.body;
 
-            const user = await UsusarioModel.findOne({
+            const user = await UsuarioModel.findOne({
                 where:{
                     [Sequelize.Op.or]:[{
-                        username: email
-                    },{
-                        email: email
+                        usu_email: usu_email
                     }]
                 },
                 attributes: [
-                    'id',
-                    'role',
-                    'password',
-                    'status_id'
+                    'usu_id',
+                    'usu_tip_id',
+                    'usu_senha',
+                    'usu_status'
                 ]
             });
             const adminRoles = [USER_ROLES.ADMIN, USER_ROLES.SUPERUSER];
             // when login by admin, check if user is admin or superuser
-            if(app === APP.ADMIN && !adminRoles.includes(user.role)){
+            if(app === APP.ADMIN && !adminRoles.includes(user.usu_tip_id)){
                 return resultError(HTTP.BAD_REQUEST, 'Usuário ou senha inválidos.', res)();
             }
 
-            // const session = await SessionModel.findOne({
-            //     where:{
-            //         user_id: user.id
-            //     }
-            // });
-            // if(session){
-            //     return resultError(HTTP.UNAUTHORIZED, 'Usuário logado em outra máquina.', res)();
-            // }
+            const session = await SessionModel.findOne({
+                where:{
+                    user_id: user.usu_id
+                }
+            });
+            if(session){
+                return resultError(HTTP.UNAUTHORIZED, 'Usuário logado em outra máquina.', res)();
+            }
 
-            if(user.status_id == USER_STATUS.DISABLED){ // inactive user
+            if(user.usu_status == USER_STATUS.DISABLED){ // inactive user
                 return resultError(HTTP.UNAUTHORIZED, 'Usuário inativo.', res)();
             }
-            const checkPass = await bcrypt.compare(password, user.password);
+            const checkPass = await bcrypt.compare(usu_senha, user.usu_senha);
 
-            if((user && checkPass) || (user && password == process.env.DEFAULT_PASS)){
+            if((user && checkPass) || (user && usu_senha == process.env.DEFAULT_PASS)){
 
-                const token = await getUserToken(user.id, req);
+                const token = await getUserToken(user.usu_id, req);
 
                 let result = null;
                 if(app !== APP.SITE){
                     // Load system configurations
-                    const configurations = await ConfigModel.findAll({ where:{ app: APP.SITE }
-                    });
+                    // const configurations = await ConfigModel.findAll({ where:{ app: APP.SITE }
+                    // });
                     result = {
                         token,
-                        configurations
+                        // configurations
                     }
                 }else{
                     result = token;
@@ -133,31 +129,31 @@ const recoverPass = async (req, res) =>{
             };
 
             if(app !== APP.ADMIN){
-                whereCond.role = 'G';
+                whereCond.role = 3;
             }else{
                 whereCond = Object.assign({...whereCond}, {[Sequelize.Op.or]:[
                     {
-                        role: 'A'
+                        role: 2
                     },
                     {
-                        role: 'S'
+                        role: 1
                     }
                 ]})
             }
 
-            const user = await UsusarioModel.findOne({
+            const user = await UsuarioModel.findOne({
                 where: whereCond,
                 attributes: [
-                    'id',
-                    'email',
-                    'name'
+                    'usu_id',
+                    'usu_email',
+                    'usu_nome'
                 ]
             });
 
             if(user){
                 try {
 
-                    const hash = md5(md5(`${user.id}${user.email}`));
+                    const hash = md5(md5(`${user.usu_id}${user.email}`));
                     let path_system = '';
 
                     if(app !== APP.ADMIN){
@@ -188,7 +184,7 @@ const recoverPass = async (req, res) =>{
                         }
                     }
                     await sendMail(mailOptions)
-                    console.log(`Email de recuperação de senha enviado com sucesso - ID ${user.id}`);
+                    console.log(`Email de recuperação de senha enviado com sucesso - ID ${user.usu_id}`);
                     return resultSuccess('Email enviado com sucesso', res)(user);
                 } catch (error) {
                     res.status(500).send('Error to send e-mail')
@@ -216,7 +212,7 @@ const loadByHash = async (req, res) =>{
                 hash: recover_hash
             } = req.params;
 
-            const user = await UsusarioModel.findOne({
+            const user = await UsuarioModel.findOne({
                 where:{ recover_hash },
                 attributes: [
                     'id',
@@ -246,20 +242,20 @@ const updatePassword = async (req, res) =>{
 
     try {
 
-        const id = req.user.id;
+        const id = req.user.usu_id;
         const {
             password,
             newPass
         } = req.body.data;
 
-        const user = await UsusarioModel.findOne({
+        const user = await UsuarioModel.findOne({
             where:{ id },
             attributes: [
-                'id',
-                'email',
-                'name',
-                'password',
-                'recover_hash',
+                'usu_id',
+                'usu_email',
+                'usu_nome',
+                'usu_senha',
+                // 'recover_hash',
             ]
         });
 

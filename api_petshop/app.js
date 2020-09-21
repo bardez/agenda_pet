@@ -37,18 +37,18 @@ app.get('/mailTest', async (req, res) =>{
     }
 });
 
-import UserRoutes from './src/modules/users/users.routes'
-import GuestUserRoutes from './src/modules/guest-users/guest-users.routes'
+import UserRoutes from './src/modules/usuario/usuario.routes'
+// import GuestUserRoutes from './src/modules/guest-users/guest-users.routes'
 import AuthRoutes from './src/modules/auth/auth.routes'
-import PageRoutes from './src/modules/pages/pages.routes'
-import ConfigRoutes from './src/modules/configuration/configuration.routes'
-import ContactRoutes from './src/modules/contact/contact.routes'
+// import PageRoutes from './src/modules/pages/pages.routes'
+// import ConfigRoutes from './src/modules/configuration/configuration.routes'
+// import ContactRoutes from './src/modules/contact/contact.routes'
 app.use('/users', UserRoutes);
-app.use('/guest-users', GuestUserRoutes);
+// app.use('/guest-users', GuestUserRoutes);
 app.use('/auth', AuthRoutes);
-app.use('/contact', ContactRoutes);
-app.use('/pages', PageRoutes);
-app.use('/config', ConfigRoutes);
+// app.use('/contact', ContactRoutes);
+// app.use('/pages', PageRoutes);
+// app.use('/config', ConfigRoutes);
 app.use('/assets/', express.static(`${appRoot}/assets`));
 app.use('/mail_files', express.static(`${appRoot}/emails`));
 
