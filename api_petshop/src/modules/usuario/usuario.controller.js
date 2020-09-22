@@ -27,8 +27,7 @@ const getAll = async (req, res) =>{
     const excludedFields = [
         'usu_senha',
         'created_at',
-        'updated_at',
-        'deleted_at'
+        'updated_at'
     ];
 
     req.query.extraFields = [
@@ -142,9 +141,9 @@ const update = async (req, res) =>{
             if(userData.usu_celular) userData.usu_celular = onlyNumbers(userData.usu_celular);
             const dataVerify = await userCheck(userData);
             if(dataVerify){
-              if(user.usu_celular !== userData.usu_celular && dataVerify.usu_celular == userData.usu_celular){
+              if(user.usu_celular && user.usu_celular !== userData.usu_celular && dataVerify.usu_celular == userData.usu_celular){
                 return resultError(HTTP.CONFLICT, 'Telefone já cadastrado', res)();
-              } else if(user.usu_email !== userData.usu_email && dataVerify.usu_email != userData.usu_email){
+              } else if(user.usu_email && user.usu_email !== userData.usu_email && dataVerify.usu_email != userData.usu_email){
                 return resultError(HTTP.CONFLICT, 'E-mail já cadastrado.', res)();
               }
             }
@@ -154,8 +153,8 @@ const update = async (req, res) =>{
         }
         
     } catch (error) {
-        console.log('UserController.update - Erro ao criar registro.', error);
-        resultError(HTTP.INTERNAL_SERVER_ERROR, 'Erro ao criar registro.', res)(error);
+        console.log('UserController.update - Erro ao atualizar registro.', error);
+        resultError(HTTP.INTERNAL_SERVER_ERROR, 'Erro ao atualizar registro.', res)(error);
     }
 }
 

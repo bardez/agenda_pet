@@ -1,9 +1,9 @@
 import { Op } from 'sequelize';
 import { Sequelize } from '../models';
-export const paginatedResults = async (model, data, excludeFields=[], searchFields = [], inclusions = []) =>{
+export const paginatedResults = async (model, data, excludeFields=[], searchFields = [], inclusions = [], sort = 'created_at') =>{
 
     const {
-        sortBy = 'usu_id',
+        sortBy = sort,
         sortDesc = 'asc',
         page = 1,
         itemsPerPage = 10,

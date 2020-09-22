@@ -13,12 +13,11 @@ export default (sequelize, DataTypes) => {
         paranoid: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
-        deletedAt: 'deleted_at',
     });
 
-    TipoUsuarioModel.associate = function(models) {
-        TipoUsuarioModel.belongsTo(models.UsuarioModel,  { as: 'usuario', foreignKey: 'usu_id'})
-    }
+    // TipoUsuarioModel.associate = function(models) {
+    //     TipoUsuarioModel.belongsTo(models.UsuarioModel,  { as: 'usuario', foreignKey: 'usu_tip_id'})
+    // }
 
     return TipoUsuarioModel;
 }

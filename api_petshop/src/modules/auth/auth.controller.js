@@ -1,7 +1,6 @@
 import {
     UsuarioModel,
-    SessionModel,
-    ConfigModel,
+    SessaoModel,
     Sequelize
 } from '../../models'
 import md5 from 'md5'
@@ -32,10 +31,10 @@ const getUserToken = async (userId, req) =>{
     });
 
     // save logged user on database
-    const session = await SessionModel.create({
-        user_id: user.usu_id,
-        ip: req.connection.remoteAddress,
-        status: SESSION_STATUS.ACTIVE
+    const session = await SessaoModel.create({
+        ses_usu_id: user.usu_id,
+        ses_ip: req.connection.remoteAddress,
+        ses_status: SESSION_STATUS.ACTIVE
     });
 
     // user.setDataValue('session_id', session.id);
@@ -71,9 +70,9 @@ const login = async (req, res) =>{
                 return resultError(HTTP.BAD_REQUEST, 'Usuário ou senha inválidos.', res)();
             }
 
-            const session = await SessionModel.findOne({
+            const session = await SessaoModel.findOne({
                 where:{
-                    user_id: user.usu_id
+                    ses_usu_id: user.usu_id
                 }
             });
             if(session){
@@ -306,19 +305,20 @@ const updatePassword = async (req, res) =>{
 const logout = async (req, res) =>{
 
     try {
-        const session = await SessionModel.findOne({
+        const {data:userLogout} = req.body;
+        const session = await SessaoModel.findOne({
             where: {
-                id: req.user.session_id
+                ses_usu_id: userLogout.usu_id
             }
         });
         
         if(session){
             await session.update({
-                status: SESSION_STATUS.INACTIVE
+                ses_status: SESSION_STATUS.INACTIVE
             },
             {
                 fields: [
-                    'status'
+                    'ses_status'
                 ]
             });
     

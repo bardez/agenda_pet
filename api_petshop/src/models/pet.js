@@ -7,6 +7,7 @@ export default (sequelize, DataTypes) => {
             primaryKey: true
         },
         pet_cat_id: DataTypes.INTEGER,
+        pet_usu_id: DataTypes.INTEGER,
         pet_nome: DataTypes.STRING(45),
         pet_nascimento: DataTypes.DATEONLY,
         pet_raca: DataTypes.STRING(45),
@@ -17,11 +18,11 @@ export default (sequelize, DataTypes) => {
         paranoid: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
-        deletedAt: 'deleted_at',
     });
 
     PetModel.associate = function(models) {
         PetModel.hasMany(models.CategoriaPetModel,  { as: 'categoria_pet', foreignKey: 'cap_id'})
+        PetModel.hasMany(models.UsuarioModel,  { as: 'usuario', foreignKey: 'usu_id'})
     }
 
     return PetModel;

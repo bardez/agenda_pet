@@ -1,21 +1,21 @@
 import { SESSION_STATUS } from "../utils/constants";
 
 export default (sequelize, DataTypes) => {
-    const SessionModel = sequelize.define("SessionModel", {
-        id: {
+    const SessaoModel = sequelize.define("SessaoModel", {
+        ses_id: {
             type: DataTypes.INTEGER(),
             autoIncrement: true,
             primaryKey: true
         },
-        user_id: DataTypes.INTEGER(),
-        ip: DataTypes.STRING(16),
-        status: DataTypes.ENUM(SESSION_STATUS.ACTIVE, SESSION_STATUS.INACTIVE),
+        ses_usu_id: DataTypes.INTEGER(),
+        ses_ip: DataTypes.STRING(16),
+        ses_status: DataTypes.ENUM(SESSION_STATUS.ACTIVE, SESSION_STATUS.INACTIVE),
     },{
-        tableName: 'session',
+        tableName: 'sessao',
         timestamps: false,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
     });
     
-    return SessionModel;
+    return SessaoModel;
 }

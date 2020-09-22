@@ -14,7 +14,6 @@ export default (sequelize, DataTypes) => {
         timestamps: false,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
-        deletedAt: 'deleted_at',
     });
 
     ServicoModel.associate = function(models) {
