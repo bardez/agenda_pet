@@ -27,13 +27,13 @@ class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> 
     DateTime(2019, 4, 22): ['Easter Monday'],
     // DateTime(2020, 9, 07): ['Independencia'],
   };
-
+  DateTime _selectedDay;
   final containerController = Modular.get<ContainerController>();
 
   @override
   void initState() {
     super.initState();
-    final _selectedDay = DateTime.now();
+     this._selectedDay = DateTime.now();
 
     _events = {
       _selectedDay.subtract(Duration(days: 30)): ['Reserva A0', 'Reserva B0', 'Reserva C0'],
@@ -76,6 +76,7 @@ class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> 
     bool permited = (day.difference(DateTime.now()).inDays < 0) ? false : true;
     setState(() {
       _selectedEvents = events;
+      _selectedDay = day;
       controller.setFab( permited );
     });
   }
@@ -111,7 +112,7 @@ class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> 
       floatingActionButton: Observer(builder: (_) {
         if( controller.canShowFab ) {
           return FloatingActionButton(
-            onPressed: () => Modular.to.pushNamed('ScheduleForm'),
+            onPressed: () => Modular.to.pushNamed('NewSchedule', arguments: this._selectedDay),
             child: Icon(Icons.add, color: Theme.of(context).floatingActionButtonTheme.foregroundColor,),
             foregroundColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,
           );

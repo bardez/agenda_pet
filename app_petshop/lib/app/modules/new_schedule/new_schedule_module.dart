@@ -12,7 +12,7 @@ class NewScheduleModule extends ChildModule {
   @override
   List<ModularRouter> get routers => [
         ModularRouter(Modular.initialRoute,
-            child: (_, args) => NewSchedulePage()),
+            child: (_, args) => NewSchedulePage(selectedDay: args.data)),
       ];
 
   static Inject get to => Inject<NewScheduleModule>.of();

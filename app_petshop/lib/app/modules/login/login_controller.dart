@@ -18,23 +18,23 @@ abstract class _LoginControllerBase with Store {
   Duration get loginTime => Duration(milliseconds: 2250);
 
   Future<String> authUser(LoginData data) {
-    print('Name: ${data.name}, Password: ${data.password}');
+    print('Email: ${data.name}, Senha: ${data.password}');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(data.name)) {
-        return 'Username not exists';
+        return 'Email não existe';
       }
       if (users[data.name] != data.password) {
-        return 'Password does not match';
+        return 'Senha incorreta';
       }
       return null;
     });
   }
 
   Future<String> recoverPassword(String name) {
-    print('Name: $name');
+    print('Email: $name');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(name)) {
-        return 'Username not exists';
+        return 'Email não existe';
       }
       return null;
     });

@@ -72,11 +72,11 @@ Widget _listMenu() {
         children: <Widget>[
           CircleAvatar(
             backgroundColor: Colors.white,
-            child: Text('JM'),
+            child: Text('TB'),
           ),
           Container(height: 12.0,),
-          Text("Jacob Moura", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),),
-          Text("jacobaraujo7@gmail.com", style: TextStyle(color: Colors.white)),
+          Text("Thiago Bardez", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.white),),
+          Text("bardez@gmail.com", style: TextStyle(color: Colors.white)),
         ],
       ),
     );

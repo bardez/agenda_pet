@@ -25,6 +25,17 @@ class _LoginPageState extends ModularState<LoginPage, LoginController> {
         Modular.to.pushReplacementNamed('/Home');
       },
       onRecoverPassword: controller.recoverPassword,
+      messages: LoginMessages(
+        loginButton: "Entrar",
+        usernameHint: "Email",
+        passwordHint: "Senha",
+        confirmPasswordError: "Confirmar Senha",
+        forgotPasswordButton: "Esqueceu a senha?",
+        signupButton: "Cadaste-se",
+        recoverPasswordButton: "Recuperar Senha",
+        goBackButton: "Voltar",
+        confirmPasswordHint: "As senhas devem ser iguais" 
+      ),
     );
   }
 }

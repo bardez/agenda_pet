@@ -1,5 +1,6 @@
 import 'package:app_petshop/app/modules/container/container_module.dart';
 import 'package:app_petshop/app/modules/login/login_module.dart';
+import 'package:app_petshop/app/modules/new_schedule/new_schedule_module.dart';
 
 import 'app_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -14,8 +15,9 @@ class AppModule extends MainModule {
 
   @override
   List<ModularRouter> get routers => [
-        ModularRouter(Modular.initialRoute, module: LoginModule()),
+        ModularRouter(Modular.initialRoute, module: ContainerModule()),
         ModularRouter('/Home', module: ContainerModule()),
+        ModularRouter('/NewSchedule', module: NewScheduleModule()),
       ];
 
   @override
