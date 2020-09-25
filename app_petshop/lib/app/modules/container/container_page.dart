@@ -45,11 +45,12 @@ class _ContainerPageState
       setState(() {});
     });
 
-    routerOutletController.listen((value) {
+    controller.setRouterController(routerOutletController);
+
+    controller.routerOutletController.listen((value) {
       controller.currentindex = value;
     });
 
-    controller.setRouterController(routerOutletController);
   }
 
   @override

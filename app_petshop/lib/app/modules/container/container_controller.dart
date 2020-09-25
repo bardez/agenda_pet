@@ -1,3 +1,6 @@
+import 'package:app_petshop/app/modules/configurations/configurations_module.dart';
+import 'package:app_petshop/app/modules/schedule/schedule_module.dart';
+import 'package:app_petshop/app/modules/services/services_module.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -10,14 +13,21 @@ class ContainerController = _ContainerControllerBase with _$ContainerController;
 abstract class _ContainerControllerBase with Store {
 
   RouterOutletListController routerOutletController = RouterOutletListController();
-  void setRouterController(rc) => routerOutletController = rc;
+  void setRouterController(rc) {
+    routerOutletController = rc;
+    routerOutletController.init([
+      ScheduleModule(),
+      ServicesModule(),
+      ConfigurationsModule(),
+    ]);
+  }
 
   @observable
-  int currentindex = 0;
+  int currentindex = 1;
 
   @action
   void toggleMenu() {
-    onTapMenu(99);
+    onTapMenu(99, '');
   }
 
   @observable
@@ -25,14 +35,16 @@ abstract class _ContainerControllerBase with Store {
 
   AnimationController animationController;
 
-  void onTapMenu(index) {
+  void onTapMenu(int index, String route) {
     if (menuOpened == true) {
       animationController?.reverse();
     } else {
       animationController?.forward();
     }
     menuOpened = !menuOpened;
-    if( index != 99)
-      routerOutletController.changeModule(index);
+    if( index != 99 && route != '') {
+      // routerOutletController.changeModule(index);
+      Modular.to.pushReplacementNamed(route);
+    }
   }
 }

@@ -16,21 +16,24 @@ Widget _listMenu() {
     return ListView(
       children: <Widget>[
         _avatar(),
-        _tiles("Início", Icons.home, 0, () {
-          containerController.onTapMenu(0);
+        _tiles("Início", Icons.home, 1, () {
+          containerController.onTapMenu(1, 'Home');
         }),
-        _tiles("Configuracoes", Icons.settings, 1, () {
-          containerController.onTapMenu(1);
+        _tiles("Servicos", Icons.list, 2, () {
+          containerController.onTapMenu(2, 'Services');
         }),
-        _tiles("Notificacoes", Icons.notifications, 2, () {;
-          containerController.onTapMenu(2);
+        _tiles("Configuracoes", Icons.settings, 3, () {
+          containerController.onTapMenu(3, 'Configurations');
         }),
-        _tiles("Sobre", Icons.info, 3, () {
-          containerController.onTapMenu(3);
+        _tiles("Notificacoes", Icons.notifications, 4, () {;
+          containerController.onTapMenu(4, 'Notifications');
+        }),
+        _tiles("Sobre", Icons.info, 5, () {
+          containerController.onTapMenu(5, 'About');
         }),
         Divider(),
-        _tiles("SAIR", Icons.exit_to_app, 4, () {
-          containerController.onTapMenu(4);
+        _tiles("SAIR", Icons.exit_to_app, 6, () {
+          
         }),
        
       ],
