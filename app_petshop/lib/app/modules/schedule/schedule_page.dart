@@ -112,6 +112,7 @@ class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> 
       floatingActionButton: Observer(builder: (_) {
         if( controller.canShowFab ) {
           return FloatingActionButton(
+            heroTag: 'scheduler_tag',
             onPressed: () => Modular.to.pushNamed('NewSchedule', arguments: this._selectedDay),
             child: Icon(Icons.add, color: Theme.of(context).floatingActionButtonTheme.foregroundColor,),
             foregroundColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,

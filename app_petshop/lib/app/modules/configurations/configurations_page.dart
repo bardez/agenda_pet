@@ -1,3 +1,4 @@
+import 'package:app_petshop/app/modules/container/container_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'configurations_controller.dart';
@@ -15,9 +16,12 @@ class _ConfigurationsPageState
     extends ModularState<ConfigurationsPage, ConfigurationsController> {
   //use 'controller' variable to access controller
 
-  List<dynamic> inputs = new List<dynamic>();
+List<dynamic> inputs;
+final containerController = Modular.get<ContainerController>();
+
 @override
 void initState() {
+  inputs = new List<dynamic>();
   setState(() {
     inputs.add({'text': 'Domingo','value': false});
     inputs.add({'text': 'Segunda-feira' ,'value': false});
@@ -41,6 +45,9 @@ void ItemChange(bool val,int index){
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        leading: GestureDetector(
+          onTap: containerController.toggleMenu,
+          child: Icon(Icons.menu)),
       ),
       body: SingleChildScrollView(
         child: Column( children: [ 
@@ -83,12 +90,13 @@ void ItemChange(bool val,int index){
             ),
           )),
           Column(
-            children: _getDaysOfWeek()
+            children: inputs.length > 0 ?_getDaysOfWeek() : [Container()]
           ),
         ]
       )
       ),
       floatingActionButton: FloatingActionButton(
+            heroTag: 'cfg_tag',
             onPressed: () => Modular.to.pop(),
             child: Icon(Icons.save, color: Theme.of(context).floatingActionButtonTheme.foregroundColor,),
             foregroundColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,

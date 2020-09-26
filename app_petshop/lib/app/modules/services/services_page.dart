@@ -1,3 +1,4 @@
+import 'package:app_petshop/app/modules/container/container_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'services_controller.dart';
@@ -14,6 +15,7 @@ class _ServicesPageState
     extends ModularState<ServicesPage, ServicesController> {
   //use 'controller' variable to access controller
   List data = new List();
+  final containerController = Modular.get<ContainerController>();
 
   @override
   void initState() {
@@ -31,6 +33,9 @@ class _ServicesPageState
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        leading: GestureDetector(
+          onTap: containerController.toggleMenu,
+          child: Icon(Icons.menu)),
       ),
       body: ListView.builder(
           itemCount: data.length,
@@ -49,6 +54,7 @@ class _ServicesPageState
           }
       ),
       floatingActionButton: FloatingActionButton(
+            heroTag: 'services_tag',
             onPressed: () => Modular.to.pushNamed('Configurations'),
             child: Icon(Icons.add, color: Theme.of(context).floatingActionButtonTheme.foregroundColor,),
             foregroundColor: Theme.of(context).floatingActionButtonTheme.foregroundColor,

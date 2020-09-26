@@ -1,5 +1,7 @@
 import 'package:app_petshop/app/components/drawer_widget.dart';
+import 'package:app_petshop/app/modules/configurations/configurations_module.dart';
 import 'package:app_petshop/app/modules/schedule/schedule_module.dart';
+import 'package:app_petshop/app/modules/services/services_module.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'container_controller.dart';
@@ -46,11 +48,6 @@ class _ContainerPageState
     });
 
     controller.setRouterController(routerOutletController);
-
-    controller.routerOutletController.listen((value) {
-      controller.currentindex = value;
-    });
-
   }
 
   @override
@@ -73,7 +70,9 @@ class _ContainerPageState
                       BorderRadius.circular(animationSizeBorder.value),
                   child: RouterOutletList(
                     modules: [
-                      ScheduleModule()
+                      ScheduleModule(),
+                      ServicesModule(),
+                      ConfigurationsModule(),
                     ],
                     controller: routerOutletController,
                   )

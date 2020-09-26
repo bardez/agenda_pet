@@ -15,11 +15,9 @@ abstract class _ContainerControllerBase with Store {
   RouterOutletListController routerOutletController = RouterOutletListController();
   void setRouterController(rc) {
     routerOutletController = rc;
-    routerOutletController.init([
-      ScheduleModule(),
-      ServicesModule(),
-      ConfigurationsModule(),
-    ]);
+    routerOutletController.listen((value) {
+      currentindex = value;
+    });
   }
 
   @observable
@@ -43,8 +41,8 @@ abstract class _ContainerControllerBase with Store {
     }
     menuOpened = !menuOpened;
     if( index != 99 && route != '') {
-      // routerOutletController.changeModule(index);
-      Modular.to.pushReplacementNamed(route);
+      routerOutletController.changeModule(index);
+      // Modular.to.navigator.(route);
     }
   }
 }
