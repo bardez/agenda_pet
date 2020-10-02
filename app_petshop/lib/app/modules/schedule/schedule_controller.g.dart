@@ -34,6 +34,14 @@ mixin _$ScheduleController on _ScheduleControllerBase, Store {
     });
   }
 
+  final _$fetchSchedulesAsyncAction =
+      AsyncAction('_ScheduleControllerBase.fetchSchedules');
+
+  @override
+  Future<dynamic> fetchSchedules() {
+    return _$fetchSchedulesAsyncAction.run(() => super.fetchSchedules());
+  }
+
   final _$_ScheduleControllerBaseActionController =
       ActionController(name: '_ScheduleControllerBase');
 

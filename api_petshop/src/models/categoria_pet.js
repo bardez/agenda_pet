@@ -16,7 +16,7 @@ export default (sequelize, DataTypes) => {
     });
 
     CategoriaPetModel.associate = function(models) {
-        CategoriaPetModel.belongsTo(models.PetModel,  { as: 'pet', foreignKey: 'pet_cat_id'})
+        // CategoriaPetModel.belongsTo(models.PetModel,  { as: 'pet', foreignKey: 'pet_id'})
     }
     
     return CategoriaPetModel;

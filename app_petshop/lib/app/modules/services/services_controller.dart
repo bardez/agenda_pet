@@ -1,3 +1,5 @@
+import 'package:app_petshop/app/modules/services/models/servico.model.dart';
+import 'package:app_petshop/app/modules/services/services_repository.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -7,11 +9,16 @@ part 'services_controller.g.dart';
 class ServicesController = _ServicesControllerBase with _$ServicesController;
 
 abstract class _ServicesControllerBase with Store {
+  final api = Modular.get<ServicesRepository>();
+
   @observable
-  int value = 0;
+  ServicoModel services;
+
+  _ServicesControllerBase(){
+    fetchServices();
+  }
 
   @action
-  void increment() {
-    value++;
-  }
+  fetchServices() async => services = await api.fetchServices();
+
 }

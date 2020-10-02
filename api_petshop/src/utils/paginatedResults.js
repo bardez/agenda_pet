@@ -27,7 +27,8 @@ export const paginatedResults = async (model, data, excludeFields=[], searchFiel
             exclude: excludeFields
         },
         include: inclusions,
-        where:{}
+        where:{},
+        logging: console.log
     }
 
     if(extraFields.length > 0){

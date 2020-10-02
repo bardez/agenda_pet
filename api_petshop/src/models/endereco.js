@@ -21,7 +21,7 @@ export default (sequelize, DataTypes) => {
     });
 
     EnderecoModel.associate = function(models) {
-        EnderecoModel.belongsTo(models.EnderecoUsuarioModel,  { as: 'endereco_usuario', foreignKey: 'enu_end_id'})
+        // EnderecoModel.belongsTo(models.EnderecoUsuarioModel,  { as: 'endereco_usuario', foreignKey: 'enu_end_id'})
     }
     
     return EnderecoModel;

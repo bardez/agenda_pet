@@ -19,39 +19,33 @@ final $ServicesController = BindInject(
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ServicesController on _ServicesControllerBase, Store {
-  final _$valueAtom = Atom(name: '_ServicesControllerBase.value');
+  final _$servicesAtom = Atom(name: '_ServicesControllerBase.services');
 
   @override
-  int get value {
-    _$valueAtom.reportRead();
-    return super.value;
+  ServicoModel get services {
+    _$servicesAtom.reportRead();
+    return super.services;
   }
 
   @override
-  set value(int value) {
-    _$valueAtom.reportWrite(value, super.value, () {
-      super.value = value;
+  set services(ServicoModel value) {
+    _$servicesAtom.reportWrite(value, super.services, () {
+      super.services = value;
     });
   }
 
-  final _$_ServicesControllerBaseActionController =
-      ActionController(name: '_ServicesControllerBase');
+  final _$fetchServicesAsyncAction =
+      AsyncAction('_ServicesControllerBase.fetchServices');
 
   @override
-  void increment() {
-    final _$actionInfo = _$_ServicesControllerBaseActionController.startAction(
-        name: '_ServicesControllerBase.increment');
-    try {
-      return super.increment();
-    } finally {
-      _$_ServicesControllerBaseActionController.endAction(_$actionInfo);
-    }
+  Future fetchServices() {
+    return _$fetchServicesAsyncAction.run(() => super.fetchServices());
   }
 
   @override
   String toString() {
     return '''
-value: ${value}
+services: ${services}
     ''';
   }
 }

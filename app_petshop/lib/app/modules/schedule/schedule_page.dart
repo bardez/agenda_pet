@@ -1,4 +1,5 @@
 import 'package:app_petshop/app/modules/container/container_controller.dart';
+import 'package:app_petshop/app/shared/EventBusCustom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -14,7 +15,7 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> with TickerProviderStateMixin {
-  Map<DateTime, List> _events;
+  // Map<DateTime, List> controller.events;
   List _selectedEvents;
   AnimationController _animationController;
   CalendarController _calendarController;
@@ -35,25 +36,16 @@ class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> 
     super.initState();
      this._selectedDay = DateTime.now();
 
-    _events = {
-      _selectedDay.subtract(Duration(days: 30)): ['Reserva A0', 'Reserva B0', 'Reserva C0'],
-      _selectedDay.subtract(Duration(days: 27)): ['Reserva A1'],
-      _selectedDay.subtract(Duration(days: 20)): ['Reserva A2', 'Reserva B2', 'Reserva C2', 'Reserva D2'],
-      _selectedDay.subtract(Duration(days: 16)): ['Reserva A3', 'Reserva B3'],
-      _selectedDay.subtract(Duration(days: 10)): ['Reserva A4', 'Reserva B4', 'Reserva C4'],
-      _selectedDay.subtract(Duration(days: 4)): ['Reserva A5', 'Reserva B5', 'Reserva C5'],
-      _selectedDay.subtract(Duration(days: 2)): ['Reserva A6', 'Reserva B6'],
-      _selectedDay: ['Reserva A7', 'Reserva B7', 'Reserva C7', 'Reserva D7'],
-      _selectedDay.add(Duration(days: 1)): ['Reserva A8', 'Reserva B8', 'Reserva C8', 'Reserva D8'],
-      _selectedDay.add(Duration(days: 3)): Set.from(['Reserva A9', 'Reserva A9', 'Reserva B9']).toList(),
-      _selectedDay.add(Duration(days: 7)): ['Reserva A10', 'Reserva B10', 'Reserva C10'],
-      _selectedDay.add(Duration(days: 11)): ['Reserva A11', 'Reserva B11'],
-      _selectedDay.add(Duration(days: 17)): ['Reserva A12', 'Reserva B12', 'Reserva C12', 'Reserva D12', 'Tosa do Andreis'],
-      _selectedDay.add(Duration(days: 22)): ['Reserva A13', 'Reserva B13'],
-      _selectedDay.add(Duration(days: 26)): ['Reserva A14', 'Reserva B14', 'Reserva C14'],
-    };
+    EventBusCustom.eventBus.on().listen((event){
+      if(event == 'RefreshSchedule') {
+        print(event);
+        controller.events = Map<DateTime, List<dynamic>>();
+        controller.schedules = null;
+        controller.fetchSchedules();
+      }
+    });
 
-    _selectedEvents = _events[_selectedDay] ?? [];
+    _selectedEvents = controller.events[_selectedDay] ?? [];
     _calendarController = CalendarController();
 
     _animationController = AnimationController(
@@ -103,7 +95,16 @@ class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> 
         children: <Widget>[
           // Switch out 2 lines below to play with TableCalendar's settings
           //-----------------------
-          _buildTableCalendar(),
+          Observer( builder: (_){
+            if( controller.events == null) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+              CircularProgressIndicator()
+            ]);
+             } else { return _buildTableCalendar(); }
+          }),
           // _buildTableCalendarWithBuilders(),
           const SizedBox(height: 8.0),
           Expanded(child: _buildEventList()),
@@ -130,7 +131,7 @@ class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> 
     return TableCalendar(
       locale: 'pt_BR',
       calendarController: _calendarController,
-      events: _events,
+      events: controller.events,
       holidays: _holidays,
       startingDayOfWeek: StartingDayOfWeek.monday,
       calendarStyle: CalendarStyle(
@@ -162,7 +163,7 @@ class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> 
   //   return TableCalendar(
   //     locale: 'pt_BR',
   //     calendarController: _calendarController,
-  //     events: _events,
+  //     events: controller.events,
   //     holidays: _holidays,
   //     initialCalendarFormat: CalendarFormat.month,
   //     formatAnimation: FormatAnimation.slide,
@@ -281,7 +282,7 @@ class _SchedulePageState extends ModularState<SchedulePage, ScheduleController> 
   }
 
   Widget _buildButtons() {
-    final dateTime = _events.keys.elementAt(_events.length - 2);
+    final dateTime = controller.events.keys.elementAt(controller.events.length - 2);
 
     return Column(
       children: <Widget>[

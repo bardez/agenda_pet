@@ -9,20 +9,20 @@ export default (sequelize, DataTypes) => {
         age_usu_id: DataTypes.INTEGER,
         age_pet_id: DataTypes.INTEGER,
         age_data: DataTypes.DATEONLY,
-        age_data: DataTypes.STRING(5),
+        age_hora: DataTypes.TIME,
         age_obs: DataTypes.STRING(100),
     },{
         tableName: 'agendamento',
-        timestamps: false,
+        timestamps: true,
         paranoid: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
+        deletedAt: 'deleted_at',
     });
 
     AgendamentoModel.associate = function(models) {
-        AgendamentoModel.belongsTo(models.AgendamentoServicoModel,  { as: 'agendamento_servico', foreignKey: 'ags_age_id'})
-        AgendamentoModel.hasMany(models.UsuarioModel,  { as: 'usuario', foreignKey: 'usu_id'})
-        AgendamentoModel.hasMany(models.PetModel,  { as: 'pet', foreignKey: 'pet_id'})
+        AgendamentoModel.belongsTo(models.UsuarioModel,  { as: 'usuario', foreignKey: 'age_usu_id'})
+        AgendamentoModel.belongsTo(models.PetModel,  { as: 'pet', foreignKey: 'age_pet_id'})
     }
 
     return AgendamentoModel;

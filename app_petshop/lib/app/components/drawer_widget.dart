@@ -1,4 +1,5 @@
 import 'package:app_petshop/app/modules/container/container_controller.dart';
+import 'package:app_petshop/app/shared/EventBusCustom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -18,9 +19,11 @@ Widget _listMenu() {
         _avatar(),
         _tiles("Início", Icons.home, 0, () {
           containerController.onTapMenu(0, 'Home');
+          EventBusCustom.eventBus.fire('RefreshSchedule');
         }),
         _tiles("Servicos", Icons.list, 1, () {
           containerController.onTapMenu(1, 'Services');
+          EventBusCustom.eventBus.fire('RefreshServices');
         }),
         _tiles("Configuracoes", Icons.settings, 2, () {
           containerController.onTapMenu(2, 'Configurations');

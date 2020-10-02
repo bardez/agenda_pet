@@ -8,6 +8,7 @@ export default (sequelize, DataTypes) => {
         },
         ags_age_id: DataTypes.INTEGER,
         ags_ser_id: DataTypes.INTEGER,
+        ags_status: DataTypes.INTEGER,
     },{
         tableName: 'agendamento_servico',
         timestamps: false,

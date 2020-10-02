@@ -17,8 +17,8 @@ export default (sequelize, DataTypes) => {
     });
 
     EnderecoUsuarioModel.associate = function(models) {
-        EnderecoUsuarioModel.hasMany(models.UsuarioModel,  { as: 'usuario', foreignKey: 'usu_id'})
-        EnderecoUsuarioModel.hasMany(models.EnderecoModel,  { as: 'endereco', foreignKey: 'end_id'})
+        EnderecoUsuarioModel.belongsToMany(models.UsuarioModel,  { as: 'usuario', foreignKey: 'enu_usu_id', through: 'endereco_usuario_task'})
+        EnderecoUsuarioModel.belongsToMany(models.EnderecoModel,  { as: 'endereco', foreignKey: 'enu_end_id', through: 'endereco_usuario_task'})
     }
 
     return EnderecoUsuarioModel;

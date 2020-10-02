@@ -26,7 +26,8 @@ export default (sequelize, DataTypes) => {
     });
 
     UsuarioModel.associate = function(models) {
-        UsuarioModel.hasOne(models.TipoUsuarioModel,  { as: 'tipo_usuario', foreignKey: 'tip_id'})
+        // 'TipoUsuarioModel' pertence ao 'UsuarioModel' como 'usu_tip_id'
+        UsuarioModel.belongsTo(models.TipoUsuarioModel,  { as: 'tipo_usuario', foreignKey: 'usu_tip_id'})
     }
     
     return UsuarioModel;

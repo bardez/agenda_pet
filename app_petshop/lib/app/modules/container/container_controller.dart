@@ -13,6 +13,7 @@ class ContainerController = _ContainerControllerBase with _$ContainerController;
 abstract class _ContainerControllerBase with Store {
 
   RouterOutletListController routerOutletController = RouterOutletListController();
+  
   void setRouterController(rc) {
     routerOutletController = rc;
     routerOutletController.listen((value) {
@@ -21,7 +22,7 @@ abstract class _ContainerControllerBase with Store {
   }
 
   @observable
-  int currentindex = 1;
+  int currentindex = 0;
 
   @action
   void toggleMenu() {

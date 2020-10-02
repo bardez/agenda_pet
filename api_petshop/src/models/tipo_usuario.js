@@ -15,9 +15,9 @@ export default (sequelize, DataTypes) => {
         updatedAt: 'updated_at',
     });
 
-    // TipoUsuarioModel.associate = function(models) {
-    //     TipoUsuarioModel.belongsTo(models.UsuarioModel,  { as: 'usuario', foreignKey: 'usu_tip_id'})
-    // }
+    TipoUsuarioModel.associate = function(models) {
+        TipoUsuarioModel.belongsTo(models.UsuarioModel,  { as: 'usuario', foreignKey: 'tip_id'})
+    }
 
     return TipoUsuarioModel;
 }

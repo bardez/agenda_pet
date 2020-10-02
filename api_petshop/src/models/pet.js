@@ -21,8 +21,8 @@ export default (sequelize, DataTypes) => {
     });
 
     PetModel.associate = function(models) {
-        PetModel.hasMany(models.CategoriaPetModel,  { as: 'categoria_pet', foreignKey: 'cap_id'})
-        PetModel.hasMany(models.UsuarioModel,  { as: 'usuario', foreignKey: 'usu_id'})
+        PetModel.belongsTo(models.CategoriaPetModel,  { as: 'categoria_pet', foreignKey: 'pet_cat_id'})
+        PetModel.belongsTo(models.UsuarioModel,  { as: 'usuario', foreignKey: 'pet_usu_id'})
     }
 
     return PetModel;

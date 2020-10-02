@@ -19,16 +19,17 @@ export default (sequelize, DataTypes) => {
         cfg_intervalo_ini: DataTypes.TIME,
         cfg_intervalo_fim: DataTypes.TIME,
     },{
-        tableName: 'configuration',
-        timestamps: false,
+        tableName: 'configuracao',
+        timestamps: true,
         paranoid: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
+        deletedAt: 'deleted_at',
         
     });
 
     ConfiguracaoModel.associate = function(models) {
-        ConfiguracaoModel.belongsTo(models.TipoServicoModel,  { as: 'tipo_servico', foreignKey: 'tip_cfg_id'})
+        // ConfiguracaoModel.belongsTo(models.TipoServicoModel,  { as: 'tipo_servico', foreignKey: 'cfg_id'})
     }
     
     return ConfiguracaoModel;

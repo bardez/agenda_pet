@@ -10,15 +10,15 @@ export default (sequelize, DataTypes) => {
         tis_desc: DataTypes.STRING(45)
     },{
         tableName: 'tipo_servico',
-        timestamps: false,
+        timestamps: true,
         paranoid: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
+        deletedAt: 'deleted_at',
     });
 
     TipoServicoModel.associate = function(models) {
-        TipoServicoModel.belongsTo(models.ServicoModel,  { as: 'servico', foreignKey: 'ser_tip_id'})
-        TipoServicoModel.hasMany(models.ConfiguracaoModel,  { as: 'configuracao', foreignKey: 'cfg_id'})
+        TipoServicoModel.belongsTo(models.ConfiguracaoModel,  { as: 'configuracao', foreignKey: 'tis_cfg_id'})
     }
 
     return TipoServicoModel;
